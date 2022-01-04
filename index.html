@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang='te'>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <title>లేఖిని (Lekhini) &mdash; Type in Telugu</title>
+    <link rel='stylesheet' type='text/css' href='style.css'>
+    <style type='text/css'>
+        h2{font-size:1.4em;}
+        #sidebar{border:1px solid #ccc;}
+        #link2HideChart{
+            text-align:right;
+            cursor:pointer;
+            color:#333;
+            height:16px;
+            background:url(close-button.png) no-repeat 100%;
+        }
+        #link2HideChart:hover{ background-image:url(close-button-hover.png); }
+        #link2Enlarge,#link2Reduce{
+            float:right;
+            cursor:pointer;
+            color:#666;
+            font-size:0.75em;
+        }
+        #link2Enlarge:hover,#link2Reduce:hover{color:#000;}
+        #link2Reduce{
+            display:none;
+            float:right;
+        }
+        label{margin-right:6px;}
+        a.searches{
+            position:absolute;
+            margin-top:2px;
+            width:16px; height:16px;
+            text-decoration:none;
+        }
+        #googlesearch{ background:url(g.png) top left; }
+        #googlesearch:hover{ background-position:0 16px; }
+        #livesearch{ background:url(live.png) top left; margin-left:20px;}
+        #livesearch:hover{ background-position:0 16px; }
+        a.searches {display: none !important; }
+        a#unableToSee {
+            padding: 2px 6px 4px;
+            font-style: italic;
+            /* 	background-color: gold; */
+            background-color: gainsboro;
+            border-radius: 4px;
+        }
+
+        textarea {
+            font-family: Consolas, Mandali, monospace;
+            box-sizing: border-box;
+        }
+
+        #controls {
+            line-height: 1;
+            padding: 0 .5em .5em;
+            text-align: right;
+        }
+
+        #controls a { line-height: 1; }
+
+        /** mobile-friendly **/
+        @media (max-width: 700px) {
+            body { min-width: 300px; margin:0; }
+            #forborder, #container { border-width: 0; }
+            #header {
+                height: 5px;
+                padding: 0;
+                box-sizing: border-box;
+                overflow:hidden;
+            }
+            #header > * { display: none; }
+            #link2Chart, #unableToSee {display: none !important; }
+            #main { margin-top: 0; }
+            #pagebody {padding: 0.3rem;}
+            #promo, #navbox, #controls {display: none; }
+            #inputarea > * {display: none;}
+            #outputarea > * {display: none;}
+            #txtInput {height: 11rem; display: block;}
+            #txtOutput{height: 11rem; display: block;}
+            #sidebar { display: none !important; }
+        }
+    </style>
+    <!--[if IE]><style type='text/css'>#forborder{border:none;}</style><![endif]-->
+    <meta name="author" content="Veeven">
+    <meta name="description" content="A Telugu Script Generator that converts RTS input to Unicode">
+    <meta name="keywords" content="లేఖిని, Lekhini, Telugu, type in Telugu, Unicode, Padma, RTS, Rice Transliteration Scheme, Veeven, తెలుగు, వీవెన్, lekhini.org">
+    <!-- LINKS -->
+    <link rel='author' type='text/html' href='http://veeven.com/' title='వీవెన్'>
+    <link rel='bookmark' type='text/html' href='http://groups.google.com/group/soc.culture.indian.telugu/browse_thread/thread/48eac8e35ba0bef4/69ec85d46731ce73' title='About RTS'>
+    <link rel='help' type='text/html' href='help.html' title='సహాయం (Help)'>
+    <link rel='copyright' type='text/plain' href='license.txt'>
+    <!-- SCRIPTS -->
+    <script type="text/javascript" src="scripts/encodings/Padma.js"></script>
+    <script type="text/javascript" src="scripts/encodings/Shared.js"></script>
+    <script type="text/javascript" src="scripts/encodings/Telugu.js"></script>
+    <script type="text/javascript" src="scripts/encodings/Unicode.js"></script>
+    <script type="text/javascript" src="scripts/encodings/Syllable.js"></script>
+    <script type="text/javascript" src="scripts/encodings/RTS.js"></script>
+    <script type="text/javascript" src="scripts/parsers/parser.js"></script>
+    <script type="text/javascript" src="scripts/parsers/RTSParser.js"></script>
+    <script type="text/javascript" src="scripts/transformers/Transformer.js"></script>
+    <script type="text/javascript" src="scripts/transformers/RTSTransformer.js"></script>
+    <script type='text/javascript'>
+      function vTransform() {
+        var inputMethod = 0;  // RTS
+        var outputMethod = 1; // unicode
+
+        var OutputElement = document.getElementById("txtOutput");
+        var InputElement = document.getElementById("txtInput");
+
+        var input = "`" + InputElement.value + "`";
+        var transformer = Transformer.createTransformer(inputMethod, outputMethod);
+        transformer.setRTSMode(RTSTransformer.rtsEnglish);
+        var output = transformer.convert(input);
+
+        // Delete the & in the output (kal&haara, bil&haNuDu)
+        var vRegExp = new RegExp(/(\S)(&)(\S)/gm);
+        if (vRegExp.test(output)){
+          output = output.replace(vRegExp, "$1$3");
+        }
+
+        // Replace $$ with Rupee sign
+        output = output.replace(/\${2}/g, '₹');
+
+        OutputElement.value = output;
+        InputElement.focus();
+
+        // Auto-scroll
+        if (InputElement.scrollHeight - InputElement.clientHeight == InputElement.scrollTop) {
+          OutputElement.scrollTop = OutputElement.scrollHeight - OutputElement.clientHeight;
+        }
+        else {
+          OutputElement.scrollTop = InputElement.scrollTop * 1.4375;
+        }
+        //	window.status = "ScrollHeight: " + InputElement.scrollHeight + "-" + OutputElement.scrollHeight +
+        //		" ScrollTop: " + InputElement.scrollTop + "-" + OutputElement.scrollTop +
+        //		" Height: " + InputElement.clientHeight + "-" + OutputElement.clientHeight;
+
+        // Search links
+        vSetSearchLinkHrefs();
+
+      }
+
+
+      // Modes: 0 - On demand; 1 - On the jump; 2 - On the fly
+      var $mode = 2; // default on-the-fly
+
+      function vSetMode($mode_selected) {
+        $mode = $mode_selected;
+        document.getElementById("txtInput").focus();
+      }
+
+      // transform if these keys are pressed
+      function vVerify($code){
+        $length = document.getElementById("txtInput").value.length;
+
+        // transfrom on demand (down arrow pressed), any mode
+        if ( $code == 40 ) vTransform();
+
+        // on-the-jump mode
+        else if ( $mode == 1 && (
+          $code == 13	// Enter
+          || $code == 32	// Spacebar
+          || $code == 188	// Comma
+          || $code == 190	// Fullstop
+          || $code == 191	// Qestion mark
+          || $code == 49	// Exclamation mark
+        )) vTransform();
+
+        // disable on-the-fly mode if length > cut-off chars
+        var $cutoff = 600;
+        if ($length > $cutoff) {
+          document.getElementById("fly").disabled = true;
+          if ($mode == 2) {
+            $mode = 1; //set to on-the-jump
+            document.getElementById("jump").checked = true;
+          }
+        }
+        else {
+          document.getElementById("fly").disabled = false;
+
+          // on-the-fly mode
+          if ($mode == 2) vTransform();
+
+          // switch to on-the-fly mode, if length is zero
+          if (!$length && $mode != 0) {
+            $mode = 2;
+            document.getElementById("fly").checked = true;
+          }
+        }
+      }
+      function vSelectIt(){
+        var OutputElement = document.getElementById("txtOutput");
+        OutputElement.select();
+        OutputElement.focus();
+
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(OutputElement.value).then();
+        }
+      }
+      function vHideCharChart(){
+        document.getElementById("sidebar").style.display = "none";
+        document.cookie = 'lekhinihelpchart=0; samesite=strict; expires=' + new Date(2030, 01, 01).toGMTString();
+      }
+      function vShowCharChart(){
+        document.getElementById("sidebar").style.display = "block";
+        document.cookie = 'lekhinihelpchart=1; samesite=strict; expires=' + new Date(2030, 01, 01).toGMTString();
+      }
+
+      function toggleCharChart() {
+        document.getElementById('sidebar').style.display == 'block' ? vHideCharChart() : vShowCharChart();
+      }
+      function vEnlargeBoxes(){
+        //var oldSize = document.getElementById("txtInput").rows;
+        document.getElementById("txtInput").rows += 6;
+        document.getElementById("txtOutput").rows += 6;
+        document.getElementById("txtInput").focus();
+        document.getElementById("link2Reduce").style.display = "inline";
+      }
+      function vReduceBoxes(){
+        document.getElementById("txtInput").rows -= 6;
+        document.getElementById("txtOutput").rows -= 6;
+        if (document.getElementById("txtInput").rows < 18) document.getElementById("link2Reduce").style.display = "none";
+      }
+      function vInitialize(){
+        if (document.cookie.search('lekhinihelpchart=0') != -1
+          || window.innerWidth <= 600
+        ) {
+          vHideCharChart();
+        } else {
+          vShowCharChart();
+        }
+        document.getElementById("txtInput").focus();
+      }
+      function vSetSearchLinkHrefs(){
+        var googleSearchPrefix = 'http://www.google.com/search?hl=te&q=';
+        var liveSearchPrefix = 'http://search.live.com/results.aspx?q=';
+
+        var sQuery = document.getElementById("txtOutput").value
+        document.getElementById("googlesearch").href = googleSearchPrefix + sQuery;
+      }
+    </script>
+</head>
+<body onload='vInitialize();'>
+<div id='forborder'><div id='container'>
+    <div id='header' onclick='this.style.display = "none";document.getElementById("txtInput").focus();'>
+        <h1 id='logo'><img src='logo.gif' alt='లేఖిని (Lekhini)'></h1>
+        <em id='caption'>ఆన్‌లైన్‌లో తెలుగు కోసం!</em>
+    </div>
+    <div id='pagebody'>
+        <div id='main'>
+            <div id="controls">
+                <input type='button' value='&darr;' onfocus='vTransform();vSelectIt();' onclick='vTransform();vSelectIt();' id='btnTransform' accesskey='t'>
+                <span>మార్పిడి తీరు:</span>
+                <input type='radio' name='mode' id='fly' value='2' checked='checked' onclick='vSetMode(this.value);'><label for='fly'>వెనువెంటనే</label>
+                <input type='radio' name ='mode' id='jump' value='1' onclick='vSetMode(this.value);'><label for='jump'>పదానికోసారి</label>
+                <input type='radio' name='mode' id='demand' value='0' onclick='vSetMode(this.value);'><label for='demand' title='డౌన్అరో నొక్కినప్పుడు' style='margin-right:24px;'>అడిగినప్పుడు</label>
+                <a href='https://veeven.wordpress.com/2020/05/23/lekhini-improvements/' id='unableToSee'>★ కొత్త విశేషాలు</a>
+                <span id='link2Chart'><a href='javascript:void(toggleCharChart());'>టైపింగ్ సహాయం</a></span>
+            </div>
+            <form action=''>
+                <div id='inputarea'>
+                    <textarea rows='20' cols='0' name='txtInput' id='txtInput' onkeyup='vVerify(event.keyCode);' spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="mee telugu sandeaSam, ingleeshu spellingulatoa"></textarea>
+                    <span id='link2Enlarge' onclick='vEnlargeBoxes();'>పొడగించు &darr;</span>
+                    <span id='link2Reduce' onclick='vReduceBoxes();'>తగ్గించు &uarr; &bull;</span>
+                </div>
+                <div id='outputarea'>
+                    <a id='googlesearch' class='searches' href='http://www.google.co.in/' accesskey='g' target='_blank'>&nbsp;</a>
+                    <textarea rows='20' cols='0' name='txtOutput' onkeydown='if (event.keyCode == 38){document.getElementById("txtInput").focus();}' id='txtOutput'>పైన పెట్టెలో టైపుచేసిన తర్వాత TABను నొక్కండి. ఈ పెట్టెలో సందేశం మీకోసం సెలక్ట్ చేసుకోబడుతుంది.</textarea>
+                </div>
+                <div id='sidebar'>
+                    <table cellspacing='0'>
+                        <!-- <tr><th colspan='6'>అచ్చులు (vowels)</th></tr> -->
+                        <tr class='division'>
+                            <td><samp>అ</samp><kbd>a</kbd></td>
+                            <td><samp>ఆ</samp><kbd>A</kbd>, <kbd>aa</kbd></td>
+                            <td><samp>ఇ</samp><kbd>i</kbd></td>
+                            <td><samp>ఈ</samp><kbd>I</kbd>, <kbd>ee</kbd>, <kbd>ii</kbd></td>
+                            <td><samp>ఉ</samp><kbd>u</kbd></td>
+                            <td><samp>ఊ</samp><kbd>U</kbd>, <kbd>uu</kbd>, <kbd>oo</kbd></td>
+                        </tr><tr>
+                        <td><samp>ఎ</samp><kbd>e</kbd></td>
+                        <td><samp>ఏ</samp><kbd>E</kbd>, <kbd>ea</kbd></td>
+                        <td><samp>ఐ</samp><kbd>ai</kbd></td>
+                        <td><samp>ఒ</samp><kbd>o</kbd></td>
+                        <td><samp>ఓ</samp><kbd>O</kbd>, <kbd>oe</kbd></td>
+                        <td><samp>ఔ</samp><kbd>ou</kbd>, <kbd>au</kbd></td>
+                    </tr><tr>
+                        <td><samp>ఋ</samp><kbd>R</kbd></td>
+                        <td><samp>ౠ</samp><kbd>Ru</kbd></td>
+                        <td class='nocontent'></kbd></td>
+                        <td class='nocontent'></kbd></td>
+                        <td><samp>అం</samp><kbd>aM</kbd></td>
+                        <td><samp>అః</samp><kbd>a@h</kbd></td>
+                    </tr>
+                        <!-- <tr><th colspan='6'>హల్లులు (consonants)</th></tr> -->
+                        <tr class='division'>
+                            <td><samp>క</samp><kbd>k</kbd></td>
+                            <td><samp>ఖ</samp><kbd>K</kbd>, <kbd>kh</kbd></td>
+                            <td><samp>గ</samp><kbd>g</kbd></td>
+                            <td><samp>ఘ</samp><kbd>gh</kbd>, <kbd>G</kbd></td>
+                            <td><samp>ఙ</samp><kbd>~m</kbd></td>
+                        </tr><tr>
+                        <td><samp>చ</samp><kbd>c</kbd>, <kbd>ch</kbd></td>
+                        <td><samp>ఛ</samp><kbd>C,Ch</kbd></td>
+                        <td><samp>జ</samp><kbd>j</kbd></td>
+                        <td><samp>ఝ</samp><kbd>J</kbd></td>
+                        <td><samp>ఞ</samp><kbd>~n</kbd></td>
+                    </tr><tr>
+                        <td><samp>ట</samp><kbd>T</kbd></td>
+                        <td><samp>ఠ</samp><kbd>Th</kbd></td>
+                        <td><samp>డ</samp><kbd>D</kbd></td>
+                        <td><samp>ఢ</samp><kbd>Dh</kbd></td>
+                        <td><samp>ణ</samp><kbd>N</kbd></td>
+                    </tr><tr>
+                        <td><samp>త</samp><kbd>t</kbd></td>
+                        <td><samp>థ</samp><kbd>th</kbd></td>
+                        <td><samp>ద</samp><kbd>d</kbd></td>
+                        <td><samp>ధ</samp><kbd>dh</kbd></td>
+                        <td><samp>న</samp><kbd>n</kbd></td>
+                    </tr><tr>
+                        <td><samp>ప</samp><kbd>p</kbd></td>
+                        <td><samp>ఫ</samp><kbd>P</kbd>, <kbd>f</kbd>, <kbd>ph</kbd></td>
+                        <td><samp>బ</samp><kbd>b</kbd></td>
+                        <td><samp>భ</samp><kbd>B</kbd>, <kbd>bh</kbd></td>
+                        <td><samp>మ</samp><kbd>m</kbd></td>
+                    </tr><tr>
+                        <td><samp>య</samp><kbd>y</kbd></td>
+                        <td><samp>ర</samp><kbd>r</kbd></td>
+                        <td><samp>ల</samp><kbd>l</kbd></td>
+                        <td><samp>వ</samp><kbd>v</kbd>, <kbd>w</kbd></td>
+                        <td><samp>శ</samp><kbd>S</kbd></td>
+                        <td><samp>ష</samp><kbd>sh</kbd></td>
+                    </tr><tr>
+                        <td><samp>స</samp><kbd>s</kbd></td>
+                        <td><samp>హ</samp><kbd>h</kbd></td>
+                        <td><samp>ళ</samp><kbd>L</kbd>, <kbd>lh</kbd></td>
+                        <td><samp>క్ష</samp><kbd>x, ksh</kbd></td>
+                        <td><samp>ఱ</samp><kbd>~r</kbd></td>
+                    </tr>
+                        <!-- <tr><th colspan='6'>ఇతరాలు (others)</th></tr> -->
+                        <tr class='division'>
+                            <td><samp>్</samp><kbd>^</kbd></td>
+                            <td><samp>ం</samp><kbd>M</kbd></td>
+                            <td><samp>₹</samp><kbd>$$</kbd></td>
+                            <td colspan='3'>force combination<br>&amp;</td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+            <!--  లేఖిని ఒక ముక్త కోమలాంత్రము (free software).-->
+        </div>
+        <div style='border-top:1px solid #ececec;padding-top:0.5em;clear:right;'>
+            <div id='navBox'>
+                <dl>
+                    <dt><a href='about.html'>లేఖిని గురించి</a></dt>
+                    <dd>ఏమిటి? ఎందుకు? ఎలా?</dd>
+                    <dt><a href='help.html'>సహాయం</a></dt>
+                    <dd>ఎలా టైపు చెయ్యాలో వివరంగా తెలుసుకోండి</dd>
+                    <dt><a href='http://veeven.wordpress.com/category/%E0%B0%B2%E0%B1%87%E0%B0%96%E0%B0%BF%E0%B0%A8%E0%B0%BF/'>బ్లాగు</a></dt>
+                    <dd>లేఖిని గురించి సంగతులు, విశేషాలు, ఇతరుల అభిప్రాయాలు, మరెన్నో...</dd>
+                    <dt><a href='nikhile.html'>nikhilE</a></dt>
+                    <dd>Can&apos;t read Telugu? Read it in English script.</dd>
+                </dl>
+            </div>
+            <p id='smallIntro'><strong>లేఖిని</strong> అనేది తెలుగు లిపిని సృష్టించే ఒక సాధనము. ఇంటర్నెట్‌లో తెలుగు సమాచార సృష్టిని ఇది సులభం చేస్తుంది. మీ బంధువులకు, మిత్రులకు ఇకనుండి <em class='highlight'>తెలుగులో</em> సందేశాలు పంపించుకోవచ్చు! <em class='highlight'>ఈ సేవ పూర్తిగా ఉచితం!</em> <!-- <a href='about.html'>ఇంకా తెలుసుకోండి.</a> --></p>
+            <h2>వ్రాయటం ఎలా?</h2>
+            <p>చాలా ఈజీ! మొదటి పెట్టెలో తెలుగునే ఇంగ్లీష్ స్పెల్లింగ్‌లతో టైపుచెయ్యండి. (ఉదా.: <strong>హలో, ఎలా ఉన్నారు?</strong> కొరకు  <kbd>halO, elA unnAru?</kbd>)</p>
+        </div>
+        <address style='clear:right;'><a href='http://veeven.com/'>వీవెన్ (Veeven)</a></address>
+        <!-- <div id='promo'><a href='http://koodali.org/'><img src='http://koodali.org/banner728x90.png' alt='కూడలి: తెలుగు బ్లాగుల సమాహారం'></a></div> -->
+        <p style='font-size:0.8em;clear:right;margin-bottom:0;'><span style='float:right;'>చివరి మార్పు: 2020 అక్టోబరు 03.</span><a href='https://addons.mozilla.org/en-US/firefox/addon/873/' title='Padma: Indic Script Transformer'>పద్మ యొక్క సాంకేతికతతో పరిపుష్ఠం.</a> | <span><a href='http://www.vim.org/' title='Vim'>విమ్</a>, <a href='https://lekhini.org/' title='Lekhini'>లేఖిని</a> లతో తయారుచేయబడింది.</span></p>
+    </div>
+</div></div>
+<script>
+  const ti = document.getElementById('txtInput');
+  ti.addEventListener('keydown', handleKeyDown);
+  function handleKeyDown(evt) {
+    if (event.keyCode !== 9 ) return;
+
+    vSelectIt();
+    evt.preventDefault();
+
+  }
+</script>
+</body>
+</html>
+<!-- vim: se ts=4 sw=4 : -->

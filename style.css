@@ -1,0 +1,165 @@
+body,samp{font:11pt Georgia, Mandali, Pothana2000, serif;}
+body{
+	margin:0 1em 1em;
+	background:#aaa;
+	min-width:755px;
+}
+/* CONTAINER */
+#container{
+	background:#fff;
+	border-left:2px solid;
+	border-right:2px solid;
+	border-bottom:2px solid;
+	border-color:#888;
+}
+	#forborder{
+		border-left:2px solid;
+		border-right:2px solid;
+		border-bottom:2px solid;
+		border-color:#9c9c9c;
+	}
+
+/* HEADER */
+#header{
+	padding:0.5em 1em;
+	background:#cc0088 url(bg.gif) top repeat-x;
+	color:#fff;
+}
+	#header *{ vertical-align:middle; }
+	h1{
+		display:inline;
+		margin:0; padding:0;
+		font-size:14pt;
+	}
+	#release{vertical-align:top;}
+	#caption{
+		font-size:1.2em; font-style:normal;
+		vertical-align:bottom;
+	}
+
+/* PAGE BODY */
+#pagebody{
+	padding:0.5em 1em;
+	background:#f9f9f9;
+}
+
+/* 	a#unableToSee,#link2Chart{float:right;} */
+	#link2Chart{
+		margin-left:0.3em;
+	}
+
+/* SIDE BAR */
+#sidebar{
+	margin-bottom:.5em;
+	background:#e9e9e9;
+	text-align:center;
+	width: max-content;
+}
+	.highlight{background:#ffc;}
+	h2{
+		margin:.3em 0 0 0;
+		font-size:1.8em;
+		color:#c08;
+	}
+
+#navBox{
+	border-left:1px solid #ececec;
+	margin-top:-0.3em; padding:0.5em;
+	float:right;
+	width:32%;
+}
+/* CHARACTER TABLE */
+table{
+	border-collapse:collapse;
+	width:100%;
+}
+	tr.division{border-top:2px solid #666 !important;}
+	th{padding-top:.6em;}
+	td{
+		padding:0 0.3em;
+		text-align:center;
+		empty-cells:hide;
+		background:#fff;
+		border:1px solid #999;
+	}
+	td.nocontent{border-width:0;background:transparent;}
+	samp{
+		display:block;
+		font-size:1.4em;
+		color:#066;
+	}
+	kbd{font:11pt monospace;}
+
+/* FORM */
+form{
+	margin:0 0 0.5em 0;
+	padding-bottom:0.5em;
+	display: flex;
+	flex-wrap: wrap;
+}
+textarea{
+	min-width: 320px;
+	width:100%;
+	font-size:1em;
+	margin: 0;
+}
+
+form > div {
+	flex: 1 1 0;
+}
+#sidebar {
+	flex: 0 0 auto;
+}
+
+
+
+/* MISC */
+p,pre{margin:.3em 0 .6em 0;}
+address{
+	border-top:1px solid #cc0088;
+	padding-top:.5em;
+	text-align:center;
+}
+a img{border:none;}
+dl{margin:0;}
+dt{
+	margin:0 0 0 0.5em;
+	padding-left:20px;
+	font-weight:bold;
+	font-size:large;
+	background:transparent url(diamond.png) left center no-repeat;
+}
+dd{
+	margin-bottom:0.5em;
+	margin-top:-0.5em;
+	padding-left:1em;
+}
+h3{margin-bottom:-0.1em;}
+.testimonial{
+	margin:2em 0; padding-left:1.6em;
+	background:transparent url(left-double-quotes.png) top left no-repeat;
+
+}
+.input{
+	border:2px inset #ccc;
+	padding:0.1em 0.2em;
+	background:#ffe;
+}
+.output{
+	color:#c08;
+}
+.errorExample{
+	text-decoration:line-through;
+}
+#promo{
+	padding:1em;
+	margin:0 auto;
+	text-align:center;
+/*	font-size:2em;*/
+}
+/*#promo a img{
+	width:728px;
+	height:90px;
+	border:none;
+}*/
+/* vim: se ts=4 sw=4 : */
