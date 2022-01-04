@@ -16,7 +16,7 @@ Padma.script_TELUGU     = 0;
 Padma.script_MAXSCRIPTS = 1; //only Telugu
 
 //Script names
-Padma.scripts = new Array();
+Padma.scripts = [];
 Padma.scripts[Padma.script_TELUGU]     = "Telugu";
 
 //Types (values to allow bit wise operations)
@@ -298,7 +298,7 @@ Padma.vattu_START = 0xECB3;
 Padma.vattu_END   = 0xECE1;
 
 //Symbol table
-Padma.symbols = new Object();
+Padma.symbols = {};
 Padma.symbols[Padma.vowel_A]     = Padma.type_accu;
 Padma.symbols[Padma.vowel_SHT_A] = Padma.type_accu;
 Padma.symbols[Padma.vowel_AA]    = Padma.type_accu;
@@ -527,43 +527,43 @@ Padma.symbols[Padma.sign_ASABOVE]   = Padma.type_unknown;
 Padma.symbols[Padma.sign_RUPEE]     = Padma.type_unknown;
 Padma.symbols[Padma.sign_NUMBER]    = Padma.type_unknown;
 
-Padma.isVowel = function (str) { return Padma.symbols[str] == Padma.type_accu; }
+Padma.isVowel = str => Padma.symbols[str] === Padma.type_accu;
 
-Padma.isSpecial = function (str) {
-	var val = Padma.symbols[str];
-	return val == null || val == Padma.type_unknown;
+Padma.isSpecial = str => {
+	let val = Padma.symbols[str];
+	return val == null || val === Padma.type_unknown;
 }
 
-Padma.isConsonant = function (str) { return Padma.symbols[str] == Padma.type_hallu; }
+Padma.isConsonant = str => Padma.symbols[str] === Padma.type_hallu;
 
-Padma.isDigit = function (str) { return Padma.symbols[str] == Padma.type_digit; }
+Padma.isDigit = function (str) { return Padma.symbols[str] === Padma.type_digit; }
 
-Padma.isGunintam = function (str) { return Padma.symbols[str] == Padma.type_gunintam; }
+Padma.isGunintam = function (str) { return Padma.symbols[str] === Padma.type_gunintam; }
 
-Padma.isVattu = function (str) { return Padma.symbols[str] == Padma.type_vattu; }
+Padma.isVattu = function (str) { return Padma.symbols[str] === Padma.type_vattu; }
 
-Padma.isHalfForm = function (str) { return Padma.symbols[str] == Padma.type_half_form; }
+Padma.isHalfForm = function (str) { return Padma.symbols[str] === Padma.type_half_form; }
 
 Padma.getType = function (str) {
 	if (str == null)
 		return Padma.type_unknown;
-	var val = Padma.symbols[str];
-	return val == null ? Padma.type_unknown : val;
+	let val = Padma.symbols[str];
+	return val === null ? Padma.type_unknown : val;
 }
 
 //No Input validation - only one char code assumed
-Padma.fast_Vattu = function (code) { return String.fromCharCode(code + 0x80); }
+Padma.fast_Vattu = (code) => String.fromCharCode(code + 0x80);
 
-Padma.fast_halfForm = function (code) { return String.fromCharCode(code + 0x100); }
+Padma.fast_halfForm = (code) => String.fromCharCode(code + 0x100);
 
-Padma.fast_baseFormFromVattu = function (code) { return String.fromCharCode(code - 0x80); }
+Padma.fast_baseFormFromVattu = (code) => String.fromCharCode(code - 0x80);
 
-Padma.fast_baseFormFromHalfForm = function (code) { return String.fromCharCode(code - 0x100); }
+Padma.fast_baseFormFromHalfForm = (code) => String.fromCharCode(code - 0x100);
 
-Padma.dependentForm = function (str) {
-	var response = "";
-	for(var i = 0; i < str.length; ++i) {
-		var code = str.charCodeAt(i);
+Padma.dependentForm = (str) => {
+	let response = "";
+	for(let i = 0; i < str.length; ++i) {
+		const code = str.charCodeAt(i);
 		if (code >= Padma.base_START && code <= Padma.base_END)
 			response += String.fromCharCode(code + 0x80);
 	}
@@ -571,9 +571,9 @@ Padma.dependentForm = function (str) {
 }
 
 Padma.halfForm = function (str) {
-	var response = "";
-	for(var i = 0; i < str.length; ++i) {
-		var code = str.charCodeAt(i);
+	let response = "";
+	for(let i = 0; i < str.length; ++i) {
+		const code = str.charCodeAt(i);
 		if (code >= Padma.base_START && code <= Padma.base_END)
 			response += String.fromCharCode(code + 0x100);
 	}
@@ -581,9 +581,9 @@ Padma.halfForm = function (str) {
 }
 
 Padma.baseForm = function (str) {
-	var response = "";
-	for(var i = 0; i < str.length; ++i) {
-		var code = str.charCodeAt(i);
+	let response = "";
+	for(let i = 0; i < str.length; ++i) {
+		const code = str.charCodeAt(i);
 		if (code >= Padma.dep_START && code <= Padma.dep_END)
 			response += String.fromCharCode(code - 0x80);
 		else if (code >= Padma.half_START && code <= Padma.half_END)

@@ -5,17 +5,9 @@
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <title>లేఖిని (Lekhini) &mdash; Type in Telugu</title>
     <link rel='stylesheet' type='text/css' href='style.css'>
-    <style type='text/css'>
+    <style>
         h2{font-size:1.4em;}
         #sidebar{border:1px solid #ccc;}
-        #link2HideChart{
-            text-align:right;
-            cursor:pointer;
-            color:#333;
-            height:16px;
-            background:url(close-button.png) no-repeat 100%;
-        }
-        #link2HideChart:hover{ background-image:url(close-button-hover.png); }
         #link2Enlarge,#link2Reduce{
             float:right;
             cursor:pointer;
@@ -36,8 +28,6 @@
         }
         #googlesearch{ background:url(g.png) top left; }
         #googlesearch:hover{ background-position:0 16px; }
-        #livesearch{ background:url(live.png) top left; margin-left:20px;}
-        #livesearch:hover{ background-position:0 16px; }
         a.searches {display: none !important; }
         a#unableToSee {
             padding: 2px 6px 4px;
@@ -74,7 +64,6 @@
             #link2Chart, #unableToSee {display: none !important; }
             #main { margin-top: 0; }
             #pagebody {padding: 0.3rem;}
-            #promo, #navbox, #controls {display: none; }
             #inputarea > * {display: none;}
             #outputarea > * {display: none;}
             #txtInput {height: 11rem; display: block;}
@@ -82,7 +71,7 @@
             #sidebar { display: none !important; }
         }
     </style>
-    <!--[if IE]><style type='text/css'>#forborder{border:none;}</style><![endif]-->
+    <!--[if IE]><style>#forborder{border:none;}</style><![endif]-->
     <meta name="author" content="Veeven">
     <meta name="description" content="A Telugu Script Generator that converts RTS input to Unicode">
     <meta name="keywords" content="లేఖిని, Lekhini, Telugu, type in Telugu, Unicode, Padma, RTS, Rice Transliteration Scheme, Veeven, తెలుగు, వీవెన్, lekhini.org">
@@ -104,19 +93,19 @@
     <script type="text/javascript" src="scripts/transformers/RTSTransformer.js"></script>
     <script type='text/javascript'>
       function vTransform() {
-        var inputMethod = 0;  // RTS
-        var outputMethod = 1; // unicode
+        const inputMethod = 0;  // RTS
+        const outputMethod = 1; // unicode
 
-        var OutputElement = document.getElementById("txtOutput");
-        var InputElement = document.getElementById("txtInput");
+        const OutputElement = document.getElementById("txtOutput");
+        const InputElement = document.getElementById("txtInput");
 
-        var input = "`" + InputElement.value + "`";
-        var transformer = Transformer.createTransformer(inputMethod, outputMethod);
+        const input = "`" + InputElement.value + "`";
+        const transformer = Transformer.createTransformer(inputMethod, outputMethod);
         transformer.setRTSMode(RTSTransformer.rtsEnglish);
-        var output = transformer.convert(input);
+        let output = transformer.convert(input);
 
         // Delete the & in the output (kal&haara, bil&haNuDu)
-        var vRegExp = new RegExp(/(\S)(&)(\S)/gm);
+        const vRegExp = new RegExp(/(\S)(&)(\S)/gm);
         if (vRegExp.test(output)){
           output = output.replace(vRegExp, "$1$3");
         }
@@ -128,7 +117,7 @@
         InputElement.focus();
 
         // Auto-scroll
-        if (InputElement.scrollHeight - InputElement.clientHeight == InputElement.scrollTop) {
+        if (InputElement.scrollHeight - InputElement.clientHeight === InputElement.scrollTop) {
           OutputElement.scrollTop = OutputElement.scrollHeight - OutputElement.clientHeight;
         }
         else {
@@ -145,7 +134,7 @@
 
 
       // Modes: 0 - On demand; 1 - On the jump; 2 - On the fly
-      var $mode = 2; // default on-the-fly
+      let $mode = 2; // default on-the-fly
 
       function vSetMode($mode_selected) {
         $mode = $mode_selected;
@@ -157,23 +146,23 @@
         $length = document.getElementById("txtInput").value.length;
 
         // transfrom on demand (down arrow pressed), any mode
-        if ( $code == 40 ) vTransform();
+        if ( $code === 40 ) vTransform();
 
         // on-the-jump mode
-        else if ( $mode == 1 && (
-          $code == 13	// Enter
-          || $code == 32	// Spacebar
-          || $code == 188	// Comma
-          || $code == 190	// Fullstop
-          || $code == 191	// Qestion mark
-          || $code == 49	// Exclamation mark
+        else if ( $mode === 1 && (
+          $code === 13	// Enter
+          || $code === 32	// Spacebar
+          || $code === 188	// Comma
+          || $code === 190	// Fullstop
+          || $code === 191	// Qestion mark
+          || $code === 49	// Exclamation mark
         )) vTransform();
 
         // disable on-the-fly mode if length > cut-off chars
-        var $cutoff = 600;
+        const $cutoff = 600;
         if ($length > $cutoff) {
           document.getElementById("fly").disabled = true;
-          if ($mode == 2) {
+          if ($mode === 2) {
             $mode = 1; //set to on-the-jump
             document.getElementById("jump").checked = true;
           }
@@ -182,17 +171,17 @@
           document.getElementById("fly").disabled = false;
 
           // on-the-fly mode
-          if ($mode == 2) vTransform();
+          if ($mode === 2) vTransform();
 
           // switch to on-the-fly mode, if length is zero
-          if (!$length && $mode != 0) {
+          if (!$length && $mode !== 0) {
             $mode = 2;
             document.getElementById("fly").checked = true;
           }
         }
       }
       function vSelectIt(){
-        var OutputElement = document.getElementById("txtOutput");
+        const OutputElement = document.getElementById("txtOutput");
         OutputElement.select();
         OutputElement.focus();
 
@@ -202,15 +191,15 @@
       }
       function vHideCharChart(){
         document.getElementById("sidebar").style.display = "none";
-        document.cookie = 'lekhinihelpchart=0; samesite=strict; expires=' + new Date(2030, 01, 01).toGMTString();
+        document.cookie = `lekhinihelpchart=0; samesite=strict; expires=${new Date(2030, 1, 1)}`;
       }
       function vShowCharChart(){
         document.getElementById("sidebar").style.display = "block";
-        document.cookie = 'lekhinihelpchart=1; samesite=strict; expires=' + new Date(2030, 01, 01).toGMTString();
+        document.cookie = `lekhinihelpchart=1; samesite=strict; expires=${new Date(2030, 1, 1)}`;
       }
 
       function toggleCharChart() {
-        document.getElementById('sidebar').style.display == 'block' ? vHideCharChart() : vShowCharChart();
+        document.getElementById('sidebar').style.display === 'block' ? vHideCharChart() : vShowCharChart();
       }
       function vEnlargeBoxes(){
         //var oldSize = document.getElementById("txtInput").rows;
@@ -225,7 +214,7 @@
         if (document.getElementById("txtInput").rows < 18) document.getElementById("link2Reduce").style.display = "none";
       }
       function vInitialize(){
-        if (document.cookie.search('lekhinihelpchart=0') != -1
+        if (document.cookie.search('lekhinihelpchart=0') !== -1
           || window.innerWidth <= 600
         ) {
           vHideCharChart();
@@ -235,10 +224,9 @@
         document.getElementById("txtInput").focus();
       }
       function vSetSearchLinkHrefs(){
-        var googleSearchPrefix = 'http://www.google.com/search?hl=te&q=';
-        var liveSearchPrefix = 'http://search.live.com/results.aspx?q=';
+        const googleSearchPrefix = 'http://www.google.com/search?hl=te&q=';
 
-        var sQuery = document.getElementById("txtOutput").value
+        const sQuery = document.getElementById("txtOutput").value
         document.getElementById("googlesearch").href = googleSearchPrefix + sQuery;
       }
     </script>
@@ -268,7 +256,7 @@
                 </div>
                 <div id='outputarea'>
                     <a id='googlesearch' class='searches' href='http://www.google.co.in/' accesskey='g' target='_blank'>&nbsp;</a>
-                    <textarea rows='20' cols='0' name='txtOutput' onkeydown='if (event.keyCode == 38){document.getElementById("txtInput").focus();}' id='txtOutput'>పైన పెట్టెలో టైపుచేసిన తర్వాత TABను నొక్కండి. ఈ పెట్టెలో సందేశం మీకోసం సెలక్ట్ చేసుకోబడుతుంది.</textarea>
+                    <textarea rows='20' cols='0' name='txtOutput' onkeydown='if (event.keyCode === 38){document.getElementById("txtInput").focus();}' id='txtOutput'>పైన పెట్టెలో టైపుచేసిన తర్వాత TABను నొక్కండి. ఈ పెట్టెలో సందేశం మీకోసం సెలక్ట్ చేసుకోబడుతుంది.</textarea>
                 </div>
                 <div id='sidebar'>
                     <table cellspacing='0'>
@@ -290,8 +278,8 @@
                     </tr><tr>
                         <td><samp>ఋ</samp><kbd>R</kbd></td>
                         <td><samp>ౠ</samp><kbd>Ru</kbd></td>
-                        <td class='nocontent'></kbd></td>
-                        <td class='nocontent'></kbd></td>
+                        <td class='nocontent'>&nbsp;</td>
+                        <td class='nocontent'>&nbsp;</td>
                         <td><samp>అం</samp><kbd>aM</kbd></td>
                         <td><samp>అః</samp><kbd>a@h</kbd></td>
                     </tr>
