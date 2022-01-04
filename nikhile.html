@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+	<head>
+		<title>nikhilE &mdash; a Telugu-to-English Convertor</title>
+		<!-- STYLE -->
+		<link rel='stylesheet' type='text/css' href='style.css'>
+		<style type='text/css'>
+h2{font-size:1.4em;}
+#main{width:100%;}
+		</style>
+		<!--[if IE]><style type='text/css'>#forborder{border:none;}</style><![endif]-->
+		<!-- META -->
+		<meta name="author" content="Veeven">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="description" content="A Telugu-to-English Convertor that converts Unicode input to RTS">
+		<meta name="keywords" content="లేఖిని, Lekhini, Telugu, type in Telugu, Unicode, Padma, RTS, Rice Transliteration Scheme, Veeven, తెలుగు, వీవెన్, lekhini.org, nikhilE">
+		<!-- LINKS -->
+		<link rel='bookmark' type='text/html' href='http://geocities.com/vnagarjuna/padma.html' title='Padma, Telugu text transformer'>
+		<link rel='author' type='text/html' href='http://veeven.com/' title='Veeven.Com'>
+		<link rel='bookmark' type='text/html' href='http://groups.google.com/group/soc.culture.indian.telugu/browse_thread/thread/48eac8e35ba0bef4/69ec85d46731ce73' title='About RTS'>
+		<link rel='help' type='text/html' href='help.html' title='సహాయము (Help)'>
+		<link rel='bookmark' type='text/html' href='http://veeven.com/koodali/' title='కూడలి: తాజా తెలుగు బ్లాగుల సమాహారం'>
+		<!-- SCRIPTS -->
+		<script type="text/javascript" src="scripts/encodings/Padma.js"></script>
+		<script type="text/javascript" src="scripts/encodings/Shared.js"></script>
+		<script type="text/javascript" src="scripts/encodings/Telugu.js"></script>
+		<script type="text/javascript" src="scripts/encodings/Unicode.js"></script>
+		<script type="text/javascript" src="scripts/encodings/Syllable.js"></script>
+		<script type="text/javascript" src="scripts/encodings/RTS.js"></script>
+		<script type="text/javascript" src="scripts/parsers/parser.js"></script>
+		<script type="text/javascript" src="scripts/parsers/RTSParser.js"></script>
+		<script type="text/javascript" src="scripts/transformers/Transformer.js"></script>
+		<script type="text/javascript" src="scripts/transformers/RTSTransformer.js"></script>
+		<script type='text/javascript'>
+function vTransform() {
+	var inputMethod = 1;  // RTS
+	var outputMethod = 0; // Unicode
+
+	var OutputElement =	document.getElementById("txtOutput");
+	var InputElement = document.getElementById("txtInput");
+
+	var input = InputElement.value;
+	var transformer = Transformer.createTransformer(inputMethod, outputMethod);
+	//transformer.setRTSMode(RTSTransformer.rtsTelugu);
+	var output = transformer.convert(input);
+
+	OutputElement.value = output;
+	InputElement.focus();
+}
+
+function vSelectIt(){
+	var OutputElement = document.getElementById("txtOutput");
+/*	OutputElement.select();*/
+	OutputElement.focus();
+}
+
+function vInitialize(){
+	document.getElementById("txtInput").focus();
+}
+		</script>
+	</head>
+	<body onload='vInitialize();'>
+		<div id='forborder'><div id='container'>
+			<div id='header'>
+				<h1 id='logo'><img src='nikhile.png' alt='లేఖిని (Lekhini)'></h1>
+				<span id='release'>beta</span>
+				<em id='caption'>Telugu to English Transliteration</em>
+			</div>
+			<div id='pagebody'>
+				<div id='main'>
+					<a href='http://lekhini.org/' id='unableToSee'>Up to Lekhini</a>
+					<form action=''>
+						<div id='inputarea'>
+							<span>Telugu text:</span><br>
+							<textarea rows='6' cols='0' name='txtInput' id='txtInput'></textarea>
+						</div>
+						<div id='outputarea'>
+							<span>English transliteration:</span>
+							<input type='button' value='&darr;' onfocus='vTransform();vSelectIt();' onclick='vTransform();vSelectIt();' id='btnTransform' accesskey='t'>
+							<textarea rows='18' cols='0' name='txtOutput' onkeydown='if (event.keyCode == 38){document.getElementById("txtInput").focus();}' id='txtOutput'>Copy or type in Telugu text in the above box. And, then Press TAB to see the English Transliteration in this box.</textarea>
+						</div>
+					</form>
+				</div>
+				<div style='border-top:1px solid #ececec;padding-top:0.5em;clear:right;'>
+					<p id='smallIntro'><strong>nikhilE</strong> is a tool to transliterate Telugu text into English. It is <em class='highlight'>not</em> a translator. In other words, it just gives English spellings of Telugu text. It is useful to you if you can understand Telugu but cannot read Telugu. Or, you can use it when you want to read Telugu text and your computer is not configured to display Telugu. So you will always be able to read any Telugu message sent to you. <em class='highlight'>And, it&rsquo;s free!</em></p>
+					<p>If you want to convert from English to Telugu, go to <a href='http://lekhini.org'>Lekhini</a>.</p>
+				</div>
+				<address style='clear:right;'><a href='http://veeven.com/'>Veeven.Com</a></address>
+				<div id='promo'><script type="text/javascript"><!--
+google_ad_client = "pub-1775397777016311";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_type = "text_image";
+google_ad_channel ="4075652820";
+google_color_border = "CC0088";
+google_color_bg = "FFFFFF";
+google_color_link = "CC0088";
+google_color_text = "000000";
+google_color_url = "008000";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+				<p style='font-size:0.8em;clear:right;margin-bottom:0;'><span style='float:right;'>Last modified: 2006 September 17.</span><a href='http://geocities.com/vnagarjuna/padma.html' title='Padma: Indic Script Transformer'>Powered by Padma.</a> | <span>Made with <a href='http://www.vim.org/' title='Vim'>Vim</a>. Graphics with <a href='http://www.xara.com/' title='Xara Xtreme'>Xara Xtreme</a>. </span>| <a href='http://validator.w3.org/check?uri=referer' title='Valid HTML!'>Valid HTML!</a> &middot; <a href='http://jigsaw.w3.org/css-validator/check/referer' title='Valid CSS!'>Valid CSS!</a></p>
+			</div>
+		</div></div>
+	</body>
+</html>
+<!-- vim: se ts=4 sw=4 : -->
