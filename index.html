@@ -143,7 +143,7 @@
 
       // transform if these keys are pressed
       function vVerify($code){
-        $length = document.getElementById("txtInput").value.length;
+        const $length = document.getElementById("txtInput").value.length;
 
         // transfrom on demand (down arrow pressed), any mode
         if ( $code === 40 ) vTransform();
@@ -250,16 +250,18 @@
             </div>
             <form action=''>
                 <div id='inputarea'>
-                    <textarea rows='20' cols='0' name='txtInput' id='txtInput' onkeyup='vVerify(event.keyCode);' spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="mee telugu sandeaSam, ingleeshu spellingulatoa"></textarea>
+                    <label for="txtInput"></label>
+                    <textarea rows='20' cols='0' name='txtInput' id='txtInput' onkeyup='vVerify(Event.keyCode);' spellcheck="false" autocapitalize="off" placeholder="mee telugu sandeaSam, ingleeshu spellingulatoa"></textarea>
                     <span id='link2Enlarge' onclick='vEnlargeBoxes();'>పొడగించు &darr;</span>
                     <span id='link2Reduce' onclick='vReduceBoxes();'>తగ్గించు &uarr; &bull;</span>
                 </div>
                 <div id='outputarea'>
                     <a id='googlesearch' class='searches' href='http://www.google.co.in/' accesskey='g' target='_blank'>&nbsp;</a>
-                    <textarea rows='20' cols='0' name='txtOutput' onkeydown='if (event.keyCode === 38){document.getElementById("txtInput").focus();}' id='txtOutput'>పైన పెట్టెలో టైపుచేసిన తర్వాత TABను నొక్కండి. ఈ పెట్టెలో సందేశం మీకోసం సెలక్ట్ చేసుకోబడుతుంది.</textarea>
+                    <label for="txtOutput"></label>
+                    <textarea rows='20' cols='0' name='txtOutput' onkeydown='if (Event.keyCode === 38){document.getElementById("txtInput").focus();}' id='txtOutput'>పైన పెట్టెలో టైపుచేసిన తర్వాత TABను నొక్కండి. ఈ పెట్టెలో సందేశం మీకోసం సెలక్ట్ చేసుకోబడుతుంది.</textarea>
                 </div>
                 <div id='sidebar'>
-                    <table cellspacing='0'>
+                    <table>
                         <!-- <tr><th colspan='6'>అచ్చులు (vowels)</th></tr> -->
                         <tr class='division'>
                             <td><samp>అ</samp><kbd>a</kbd></td>
@@ -366,7 +368,7 @@
   const ti = document.getElementById('txtInput');
   ti.addEventListener('keydown', handleKeyDown);
   function handleKeyDown(evt) {
-    if (event.keyCode !== 9 ) return;
+    if (Event.keyCode !== 9 ) return;
 
     vSelectIt();
     evt.preventDefault();
